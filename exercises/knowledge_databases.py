@@ -28,19 +28,23 @@ def query_article_by_topic():
 	I_want = input("what do you learn about?")
 	print(session.query(Knowledge).filter_by(topic=I_want).first())
 
-articales_low_rating = []
+
 
 def qurey_by_rating(threshold):
-	list_d = query_all_articles()
-	for i in range(len(list_d)):
-		if list_d[i] < threshold:
-			articales_low_rating.append(list_d[i])
+	list_t = query_all_articles()
+	articales_low_rating = []
+	for n in list_t:
+		current = session.n.rating
+		if current < threshold:
+			articales_low_rating.append(n)
 	return(articales_low_rating)
 
-print(qurey_by_rating(7))
+
 
 def delete_article_by_topic():
-	pass
+	I_delete = input("what topic do you want to delete?")
+	want = session.query(Knowledge).filter_by(topic=I_delete)
+	session.delete(want)
 
 def delete_all_articles():
 	list_s = query_all_articles()
@@ -48,5 +52,12 @@ def delete_all_articles():
 		ready = session.query(Knowledge).first()
 		session.delete(ready)
 	session.commit()
-def edit_article_rating():
-	pass
+
+def edit_article_rating(updated_rating, articale_title):
+	edit = session.query(Knowledge).filter_by(topic = articale_title).all()
+	for t in edit:
+		t.rating = updated_rating
+	session.commit()
+edit_article_rating(9, "robotics")
+print(query_all_articles())	
+	
